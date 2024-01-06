@@ -226,7 +226,7 @@ const useCustomTable = () => {
   };
 
   //toolbar
-  const tableName = "Custom Table";
+  const tableName = "MUI Custom Table";
   const [search, setSearch] = useState<string>("");
   const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
   const handleSearch = (input: string) => {

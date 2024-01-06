@@ -30,7 +30,7 @@ export default function CustomTable(props: TCustomTableProps) {
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }} elevation={6}>
       {toolbar}
-      <TableContainer sx={{ maxHeight: 400 }}>
+      <TableContainer sx={{ height: 400 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -99,58 +99,62 @@ export default function CustomTable(props: TCustomTableProps) {
               })}
             </TableRow>
           </TableHead>
-          {loading && <Typography>loading records</Typography>}
-          <TableBody>
-            {rows
-              //   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={Object.values(row).toString()}
-                  >
-                    {columns.map((column) => {
-                      const value = row[column.field];
-                      const styles: React.CSSProperties =
-                        column.sticky && !tableType
-                          ? {
-                              position: "sticky",
-                              zIndex: 800,
-                              backgroundColor: "white",
-                              ...{
-                                [column.sticky.direction]: column.sticky.length,
-                              },
-                            }
-                          : {};
-                      return (
-                        <TableCell
-                          key={column.field}
-                          align={column.align}
-                          style={{
-                            minWidth: column.minWidth,
-                            ...styles,
-                            padding: 0,
-                            height: rowHeight ? rowHeight : 32,
-                          }}
-                        >
-                          {column.renderCell ? (
-                            column.renderCell({ value, row })
-                          ) : (
-                            <Typography
-                              paddingInline={".5rem"}
-                            >
-                              {value}
-                            </Typography>
-                          )}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
+          {loading ? (
+            <Typography>Loading ...</Typography>
+          ) : rows.length > 0 ? (
+            <TableBody>
+              {rows
+                //   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => {
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={Object.values(row).toString()}
+                    >
+                      {columns.map((column) => {
+                        const value = row[column.field];
+                        const styles: React.CSSProperties =
+                          column.sticky && !tableType
+                            ? {
+                                position: "sticky",
+                                zIndex: 800,
+                                backgroundColor: "white",
+                                ...{
+                                  [column.sticky.direction]:
+                                    column.sticky.length,
+                                },
+                              }
+                            : {};
+                        return (
+                          <TableCell
+                            key={column.field}
+                            align={column.align}
+                            style={{
+                              minWidth: column.minWidth,
+                              ...styles,
+                              padding: 0,
+                              height: rowHeight ? rowHeight : 32,
+                            }}
+                          >
+                            {column.renderCell ? (
+                              column.renderCell({ value, row })
+                            ) : (
+                              <Typography paddingInline={".5rem"}>
+                                {value}
+                              </Typography>
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          ) : (
+            <Typography>No Rows</Typography>
+          )}
         </Table>
       </TableContainer>
       {footer}
